@@ -1,5 +1,5 @@
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-001-20260810T093923-3aaa  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-001-20260810T094625-b0e3  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  SafeCloud / TeamDocs  |  USD 8,000.00  |  data_type=internal  |  use=Store internal team documents
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -7,7 +7,7 @@ step  1  reason   The policy is the highest-priority source, so it is retrieved 
           observe  success | 9 item(s), 9 usable | 20ms
 step  2  reason   SafeCloud needs a current vendor-risk record before status and rating can be judged.
           act      lookup_vendor_risk(route=primary, attempt=1) args={"vendor_name": "SafeCloud", "product": "TeamDocs"}
-          observe  success | 1 item(s), 1 usable | 26ms
+          observe  success | 1 item(s), 1 usable | 27ms
 step  3  reason   The approved document repository is the second priority-2 source; it is checked both for the assessment the data type requires and to detect disagreement with the risk record.
           act      search_vendor_documents(route=approved_repository, attempt=1) args={"vendor_name": "SafeCloud", "product": "TeamDocs", "query_variant": "default"}
           observe  success | 1 item(s), 1 usable | 21ms
@@ -16,7 +16,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=2000.0 | 10ms
 step  5  reason   The policy resolves to APPROVE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "SafeCloud", "decision": {"request_id": "VR-001", "action": "APPROVE", "rationale": "Approved: SafeCloud / TeamDocs. Request complete…
-          observe  success | recorded_action=APPROVE | was_already_recorded=False | 177ms
+          observe  success | recorded_action=APPROVE | was_already_recorded=False | 176ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision APPROVE   stop=goal_complete   steps=5   retries=0
 rules    R10-ALL-CONDITIONS-MET
@@ -26,7 +26,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-002-20260810T093924-bf6a  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-002-20260810T094625-cdf5  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  DataBridge / InsightPro  |  USD 9,000.00  |  data_type=internal  |  use=Analyze internal operational metrics
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -43,7 +43,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=1000.0 | 10ms
 step  5  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "DataBridge", "decision": {"request_id": "VR-002", "action": "ESCALATE", "rationale": "Escalated: DataBridge / InsightPro. Current ve…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 199ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 178ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=goal_complete   steps=5   retries=0
 rules    R7-RISK-MEDIUM
@@ -53,7 +53,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-003-20260810T093924-431f  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-003-20260810T094626-ba24  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  BlockedSoft / SyncNow  |  USD 5,000.00  |  data_type=internal  |  use=Synchronize company files
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -64,7 +64,7 @@ step  2  reason   BlockedSoft needs a current vendor-risk record before status a
           observe  success | 1 item(s), 1 usable | 20ms
 step  3  reason   The policy resolves to REJECT. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "BlockedSoft", "decision": {"request_id": "VR-003", "action": "REJECT", "rationale": "Rejected: BlockedSoft / SyncNow. BlockedSoft / …
-          observe  success | recorded_action=REJECT | was_already_recorded=False | 175ms
+          observe  success | recorded_action=REJECT | was_already_recorded=False | 174ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision REJECT   stop=risk_too_high   steps=3   retries=0
 rules    R5-VENDOR-PROHIBITED, R6-RISK-HIGH
@@ -74,7 +74,7 @@ note     planner stopped: A rejection is established and nothing stricter exists
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-004-20260810T093925-a259  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-004-20260810T094626-e860  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  SafeCloud / TeamDocs  |  missing  |  data_type=internal  |  use=Store team documents
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -82,7 +82,7 @@ step  1  reason   The policy is the highest-priority source, so it is retrieved 
           observe  success | 9 item(s), 9 usable | 20ms
 step  2  reason   The policy resolves to REQUEST_INFORMATION. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "SafeCloud", "decision": {"request_id": "VR-004", "action": "REQUEST_INFORMATION", "rationale": "Information requested: SafeCloud / T…
-          observe  success | recorded_action=REQUEST_INFORMATION | was_already_recorded=False | 201ms
+          observe  success | recorded_action=REQUEST_INFORMATION | was_already_recorded=False | 176ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision REQUEST_INFORMATION   stop=missing_information   steps=2   retries=0
 rules    R1-REQUIRED-FIELDS-MISSING
@@ -93,7 +93,7 @@ note     planner stopped: The request is missing required information. No tool c
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-005-20260810T093925-df60  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-005-20260810T094626-ab08  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  SafeCloud / TeamDocs  |  USD 7,000.00  |  data_type=missing  |  use=Store project documents
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -101,7 +101,7 @@ step  1  reason   The policy is the highest-priority source, so it is retrieved 
           observe  success | 9 item(s), 9 usable | 20ms
 step  2  reason   The policy resolves to REQUEST_INFORMATION. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "SafeCloud", "decision": {"request_id": "VR-005", "action": "REQUEST_INFORMATION", "rationale": "Information requested: SafeCloud / T…
-          observe  success | recorded_action=REQUEST_INFORMATION | was_already_recorded=False | 175ms
+          observe  success | recorded_action=REQUEST_INFORMATION | was_already_recorded=False | 201ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision REQUEST_INFORMATION   stop=missing_information   steps=2   retries=0
 rules    R1-REQUIRED-FIELDS-MISSING
@@ -112,7 +112,7 @@ note     planner stopped: The request is missing required information. No tool c
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-006-20260810T093925-31b2  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-006-20260810T094627-5491  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  TimeoutLabs / MetricsHub  |  USD 7,500.00  |  data_type=internal  |  use=Monitor internal system metrics
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -133,7 +133,7 @@ step  5  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=2500.0 | 10ms
 step  6  reason   The policy resolves to APPROVE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "TimeoutLabs", "decision": {"request_id": "VR-006", "action": "APPROVE", "rationale": "Approved: TimeoutLabs / MetricsHub. Request co…
-          observe  success | recorded_action=APPROVE | was_already_recorded=False | 206ms
+          observe  success | recorded_action=APPROVE | was_already_recorded=False | 175ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision APPROVE   stop=goal_complete   steps=6   retries=1
 rules    R10-ALL-CONDITIONS-MET
@@ -143,7 +143,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-007-20260810T093926-a798  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-007-20260810T094627-65ad  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  FailWare / OpsMonitor  |  USD 6,000.00  |  data_type=confidential  |  use=Monitor confidential infrastructure logs
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -168,7 +168,7 @@ step  6  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=4000.0 | 10ms
 step  7  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "FailWare", "decision": {"request_id": "VR-007", "action": "ESCALATE", "rationale": "Escalated: FailWare / OpsMonitor. No vendor-risk…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 197ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 178ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=evidence_unavailable   steps=7   retries=2
 rules    R8-RISK-EVIDENCE-NOT-CURRENT
@@ -178,7 +178,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-008-20260810T093926-e38d  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-008-20260810T094628-121a  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  SplitWare / SecureShare  |  USD 7,000.00  |  data_type=confidential  |  use=Share confidential project files
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -186,7 +186,7 @@ step  1  reason   The policy is the highest-priority source, so it is retrieved 
           observe  success | 9 item(s), 9 usable | 20ms
 step  2  reason   SplitWare needs a current vendor-risk record before status and rating can be judged.
           act      lookup_vendor_risk(route=primary, attempt=1) args={"vendor_name": "SplitWare", "product": "SecureShare"}
-          observe  success | 1 item(s), 1 usable | 21ms
+          observe  success | 1 item(s), 1 usable | 20ms
 step  3  reason   The approved document repository is the second priority-2 source; it is checked both for the assessment the data type requires and to detect disagreement with the risk record.
           act      search_vendor_documents(route=approved_repository, attempt=1) args={"vendor_name": "SplitWare", "product": "SecureShare", "query_variant": "default"}
           observe  success | 1 item(s), 1 usable | 20ms
@@ -195,7 +195,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=3000.0 | 10ms
 step  5  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "SplitWare", "decision": {"request_id": "VR-008", "action": "ESCALATE", "rationale": "Escalated: SplitWare / SecureShare. Current pri…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 202ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 176ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=goal_complete   steps=5   retries=0
 rules    R11-SOURCE-CONFLICT, R9B-SECURITY-ASSESSMENT-NOT-PASSED
@@ -205,7 +205,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-009-20260810T093927-25ee  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-009-20260810T094628-25c5  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  InjectCorp / HelpDesk AI  |  USD 9,000.00  |  data_type=confidential  |  use=Process confidential customer-support records
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -222,7 +222,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=1000.0 | 10ms
 step  5  reason   The policy resolves to APPROVE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "InjectCorp", "decision": {"request_id": "VR-009", "action": "APPROVE", "rationale": "Approved: InjectCorp / HelpDesk AI. Request com…
-          observe  success | recorded_action=APPROVE | was_already_recorded=False | 201ms
+          observe  success | recorded_action=APPROVE | was_already_recorded=False | 247ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision APPROVE   stop=goal_complete   steps=5   retries=0
 rules    R10-ALL-CONDITIONS-MET, R12-UNTRUSTED-INSTRUCTION-IGNORED
@@ -233,7 +233,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-010-20260810T093927-39fb  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-010-20260810T094629-1546  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  DuplicateCo / FlowDesk  |  USD 6,500.00  |  data_type=internal  |  use=Manage internal workflow tasks
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -250,7 +250,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=3500.0 | 10ms
 step  5  reason   The policy resolves to APPROVE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "DuplicateCo", "decision": {"request_id": "VR-010", "action": "APPROVE", "rationale": "Approved: DuplicateCo / FlowDesk. Request comp…
-          observe  success | recorded_action=APPROVE | was_already_recorded=False | 198ms
+          observe  success | recorded_action=APPROVE | was_already_recorded=False | 178ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision APPROVE   stop=goal_complete   steps=5   retries=0
 rules    R10-ALL-CONDITIONS-MET
@@ -260,7 +260,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-010-20260810T093928-251e  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-010-20260810T094629-8f37  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  DuplicateCo / FlowDesk  |  USD 6,500.00  |  data_type=internal  |  use=Manage internal workflow tasks
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   Memory already holds a final action for VR-010. The policy forbids recording the same final action twice, so the stored decision is returned unchanged.
@@ -273,7 +273,7 @@ why      Approved: DuplicateCo / FlowDesk. Request complete, vendor permitted, c
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-011-20260810T093928-19b0  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-011-20260810T094629-07eb  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  OldStack / LegacyCRM  |  USD 4,000.00  |  data_type=internal  |  use=Store internal sales records
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -300,7 +300,7 @@ step  7  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=False | headroom=6000.0 | 10ms
 step  8  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "OldStack", "decision": {"request_id": "VR-011", "action": "ESCALATE", "rationale": "Escalated: OldStack / LegacyCRM. The only vendor…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 175ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 176ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=evidence_unavailable   steps=8   retries=2
 rules    R8-RISK-EVIDENCE-NOT-CURRENT
@@ -311,7 +311,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-012-20260810T093929-495a  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-012-20260810T094630-afd8  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  BudgetSoft / NotesPlus  |  USD 15,000.00  |  data_type=internal  |  use=Create internal meeting notes
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -328,7 +328,7 @@ step  4  reason   Cost and evidence age are checked against the policy limits by
           observe  success | exceeds_threshold=True | headroom=-5000.0 | 10ms
 step  5  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "BudgetSoft", "decision": {"request_id": "VR-012", "action": "ESCALATE", "rationale": "Escalated: BudgetSoft / NotesPlus. Cost USD 15…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 203ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 177ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=goal_complete   steps=5   retries=0
 rules    R4-COST-ABOVE-THRESHOLD
@@ -338,7 +338,7 @@ note     planner stopped: Every evidence goal is settled; the policy can now be 
 ════════════════════════════════════════════════════════════════════════════════════════════
 
 ════════════════════════════════════════════════════════════════════════════════════════════
-run VR-013-20260810T093929-1255  planner=rule  policy v1.0  evaluation_date=2026-08-01
+run VR-013-20260810T094630-cfcb  planner=rule  policy v1.0  evaluation_date=2026-08-01
 request  SafeCloud / TeamDocs  |  USD 8,000.00  |  data_type=restricted  |  use=Store payment credentials
 ────────────────────────────────────────────────────────────────────────────────────────────
 step  1  reason   The policy is the highest-priority source, so it is retrieved before any judgement is formed.
@@ -349,13 +349,13 @@ step  2  reason   SafeCloud needs a current vendor-risk record before status and
           observe  success | 1 item(s), 1 usable | 20ms
 step  3  reason   The approved document repository is the second priority-2 source; it is checked both for the assessment the data type requires and to detect disagreement with the risk record.
           act      search_vendor_documents(route=approved_repository, attempt=1) args={"vendor_name": "SafeCloud", "product": "TeamDocs", "query_variant": "default"}
-          observe  success | 1 item(s), 1 usable | 21ms
+          observe  success | 1 item(s), 1 usable | 20ms
 step  4  reason   Cost and evidence age are checked against the policy limits by calculation rather than by estimate.
           act      compute_cost_assessment(route=local, attempt=1) args={"cost": 8000.0, "currency": "USD", "evidence_ages_days": [22, 47]}
           observe  success | exceeds_threshold=False | headroom=2000.0 | 10ms
 step  5  reason   The policy resolves to ESCALATE. Recording it through the approval API, which is idempotent on request_id.
           act      record_final_decision(route=approval_api, attempt=1) args={"vendor_name": "SafeCloud", "decision": {"request_id": "VR-013", "action": "ESCALATE", "rationale": "Escalated: SafeCloud / TeamDocs. Restricted dat…
-          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 175ms
+          observe  success | recorded_action=ESCALATE | was_already_recorded=False | 176ms
 ────────────────────────────────────────────────────────────────────────────────────────────
 decision ESCALATE   stop=goal_complete   steps=5   retries=0
 rules    R3-DATA-TYPE-RESTRICTED
