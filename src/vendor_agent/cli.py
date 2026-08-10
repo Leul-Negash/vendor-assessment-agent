@@ -115,29 +115,30 @@ def cmd_tools(args) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    # The shared flags hang off each subcommand rather than the top level, so
+    # they read naturally after it: `run VR-007 --json`.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--data-dir", help="directory holding the mock vendor data")
+    common.add_argument("--run-dir", help="directory for the memory database and decision log")
+    common.add_argument("--planner", choices=("rule", "llm"), help="planner to use (default: rule)")
+    common.add_argument("--max-steps", type=int, help="override the step budget")
+    common.add_argument("--quiet", action="store_true", help="write the transcript without echoing it")
+    common.add_argument("--json", action="store_true", help="also print machine-readable output")
+    common.add_argument("--fresh", action="store_true", help="clear stored decisions before running")
+
     parser = argparse.ArgumentParser(
         prog="vendor-agent", description="Vendor-Assessment Agent (ReAct loop over mock tools)"
     )
-    parser.add_argument("--data-dir", help="directory holding the mock vendor data")
-    parser.add_argument("--run-dir", help="directory for the memory database and decision log")
-    parser.add_argument("--planner", choices=("rule", "llm"), help="planner to use (default: rule)")
-    parser.add_argument("--max-steps", type=int, help="override the step budget")
-    parser.add_argument("--quiet", action="store_true", help="write the transcript without echoing it")
-    parser.add_argument("--json", action="store_true", help="also print machine-readable output")
-    parser.add_argument(
-        "--fresh", action="store_true", help="clear stored decisions before running"
-    )
-
     sub = parser.add_subparsers(dest="command", required=True)
 
-    run_p = sub.add_parser("run", help="assess one request from the supplied data")
+    run_p = sub.add_parser("run", parents=[common], help="assess one request from the supplied data")
     run_p.add_argument("request_id")
     run_p.set_defaults(func=cmd_run)
 
-    batch_p = sub.add_parser("batch", help="assess every supplied request in order")
+    batch_p = sub.add_parser("batch", parents=[common], help="assess every supplied request in order")
     batch_p.set_defaults(func=cmd_batch)
 
-    ask_p = sub.add_parser("ask", help="assess a request given on the command line")
+    ask_p = sub.add_parser("ask", parents=[common], help="assess a request given on the command line")
     ask_p.add_argument("--request-id", default="AD-HOC-1")
     ask_p.add_argument("--vendor")
     ask_p.add_argument("--product")
@@ -146,7 +147,9 @@ def build_parser() -> argparse.ArgumentParser:
     ask_p.add_argument("--data-type")
     ask_p.set_defaults(func=cmd_ask)
 
-    tools_p = sub.add_parser("tools", help="print the tool catalogue and its contracts")
+    tools_p = sub.add_parser(
+        "tools", parents=[common], help="print the tool catalogue and its contracts"
+    )
     tools_p.set_defaults(func=cmd_tools)
 
     return parser
