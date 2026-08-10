@@ -1,0 +1,86 @@
+{
+  "description": "Extra requests added on top of the supplied set to cover edges the shared data does not reach: enum violations, unparsable numbers, the exact policy boundaries, a vendor absent from the risk database, and a public-data request. The supplied files are used unchanged; these are additional inputs only.",
+  "requests": [
+    {
+      "request_id": "EX-001",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": 10000,
+      "intended_use": "Store internal team documents",
+      "data_type": "internal",
+      "note": "Cost exactly at the threshold. 'Above USD 10,000' excludes 10,000, so this must not escalate on cost."
+    },
+    {
+      "request_id": "EX-002",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": 10000.01,
+      "intended_use": "Store internal team documents",
+      "data_type": "internal",
+      "note": "One cent above the threshold; must escalate on cost."
+    },
+    {
+      "request_id": "EX-003",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": 5000,
+      "intended_use": "Store internal team documents",
+      "data_type": "secret",
+      "note": "Data type outside the allowed enum; the value cannot be interpreted, so information is requested."
+    },
+    {
+      "request_id": "EX-004",
+      "vendor_name": "GhostVendor",
+      "product": "PhantomSuite",
+      "cost": 3000,
+      "intended_use": "Store internal notes",
+      "data_type": "internal",
+      "note": "Vendor absent from the risk database; no current evidence exists, so escalate rather than approve."
+    },
+    {
+      "request_id": "EX-005",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": "8,000",
+      "intended_use": "Store internal team documents",
+      "data_type": "internal",
+      "note": "Cost supplied as a formatted string; coerced to a number rather than rejected."
+    },
+    {
+      "request_id": "EX-006",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": "eight thousand",
+      "intended_use": "Store internal team documents",
+      "data_type": "internal",
+      "note": "Cost that cannot be parsed; the schema must reject it instead of guessing."
+    },
+    {
+      "request_id": "EX-007",
+      "vendor_name": "SafeCloud",
+      "product": "TeamDocs",
+      "cost": 2000,
+      "intended_use": "Publish the public product catalogue",
+      "data_type": "public",
+      "note": "Public data needs only a current vendor-risk record."
+    },
+    {
+      "request_id": "EX-008",
+      "vendor_name": "BlockedSoft",
+      "product": "SyncNow",
+      "cost": 25000,
+      "intended_use": "Synchronise restricted payment files",
+      "data_type": "restricted",
+      "note": "Restricted data, cost over the limit, and a prohibited high-risk vendor all at once. Rejection is the strictest applicable action and must win."
+    },
+    {
+      "request_id": "EX-009",
+      "vendor_name": "   ",
+      "product": "TeamDocs",
+      "cost": 4000,
+      "intended_use": "Store internal documents",
+      "data_type": "internal",
+      "note": "Whitespace-only vendor name counts as missing, not as a vendor called ' '."
+    }
+  ]
+}
