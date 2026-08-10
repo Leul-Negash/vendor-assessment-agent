@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 920" width="1240" height="920"
+     font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5568"/>
+    </marker>
+    <marker id="arrow-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/>
+    </marker>
+    <style>
+      .band { fill: #f7f8fa; stroke: #d7dbe2; stroke-width: 1; rx: 10; }
+      .band-label { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; fill: #7b8494; }
+      .box { fill: #ffffff; stroke: #b9c0cb; stroke-width: 1.4; rx: 7; }
+      .box-accent { fill: #eef4ff; stroke: #6c8fd6; stroke-width: 1.6; rx: 7; }
+      .box-guard { fill: #fff7ed; stroke: #d99a4a; stroke-width: 1.6; rx: 7; }
+      .box-mem { fill: #f2fbf5; stroke: #6aab7f; stroke-width: 1.6; rx: 7; }
+      .box-out { fill: #fdf2f2; stroke: #c76b6b; stroke-width: 1.6; rx: 7; }
+      .t { font-size: 13.5px; font-weight: 600; fill: #1f2733; }
+      .s { font-size: 11.5px; fill: #5b6472; }
+      .m { font-size: 11px; font-family: ui-monospace, 'DejaVu Sans Mono', monospace; fill: #47505f; }
+      .edge { stroke: #4a5568; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+      .edge-loop { stroke: #b45309; stroke-width: 1.6; fill: none; marker-end: url(#arrow-loop);
+                   stroke-dasharray: 5 3; }
+      .edge-label { font-size: 11px; font-weight: 600; fill: #b45309; }
+      .edge-label-d { font-size: 11px; font-weight: 600; fill: #4a5568; }
+      .title { font-size: 18px; font-weight: 700; fill: #16202e; }
+      .subtitle { font-size: 12.5px; fill: #5b6472; }
+    </style>
+  </defs>
+
+  <rect width="1240" height="920" fill="#ffffff"/>
+  <text class="title" x="32" y="36">Vendor-Assessment Agent — control flow</text>
+  <text class="subtitle" x="32" y="57">The planner chooses what to try next; the policy decides the
+    outcome; the loop enforces the limits. No box may take another's job.</text>
+
+  <!-- ============ INTAKE ============ -->
+  <rect class="box" x="32" y="86" width="212" height="72"/>
+  <text class="t" x="46" y="110">Vendor request</text>
+  <text class="s" x="46" y="128">web form · CLI</text>
+  <text class="s" x="46" y="145">supplied JSON</text>
+
+  <rect class="box-guard" x="276" y="86" width="212" height="72"/>
+  <text class="t" x="290" y="110">Request schema</text>
+  <text class="m" x="290" y="128">5 required fields</text>
+  <text class="m" x="290" y="145">enum · types · ranges</text>
+
+  <rect class="box-mem" x="520" y="86" width="212" height="72"/>
+  <text class="t" x="534" y="110">Duplicate guard</text>
+  <text class="s" x="534" y="128">decided before?</text>
+  <text class="s" x="534" y="145">stop, return it unchanged</text>
+
+  <rect class="box-accent" x="764" y="86" width="212" height="72"/>
+  <text class="t" x="778" y="110">Task state opened</text>
+  <text class="m" x="778" y="128">run_id · step log</text>
+  <text class="m" x="778" y="145">attempt ledger</text>
+
+  <path class="edge" d="M 244 122 L 272 122"/>
+  <path class="edge" d="M 488 122 L 516 122"/>
+  <path class="edge" d="M 732 122 L 760 122"/>
+
+  <path class="edge" d="M 870 158 L 870 180 L 166 180 L 166 236"/>
+  <text class="edge-label-d" x="500" y="174">enter the loop</text>
+
+  <!-- ============ REACT LOOP ============ -->
+  <rect class="band" x="32" y="200" width="908" height="336"/>
+  <text class="band-label" x="48" y="222">REASON → ACT → OBSERVE → UPDATE</text>
+
+  <rect class="box-accent" x="54" y="240" width="224" height="172"/>
+  <text class="t" x="68" y="264">Planner</text>
+  <text class="s" x="68" y="283">rule (default) or llm</text>
+  <text class="m" x="68" y="308">goal checklist:</text>
+  <text class="m" x="68" y="325">policy → risk →</text>
+  <text class="m" x="68" y="342">documents → cost</text>
+  <text class="m" x="68" y="367">fallback ladder:</text>
+  <text class="m" x="68" y="384">corrected input → route</text>
+  <text class="m" x="68" y="401">→ ask → escalate</text>
+
+  <rect class="box-guard" x="298" y="240" width="224" height="172"/>
+  <text class="t" x="312" y="264">Tool runtime</text>
+  <text class="s" x="312" y="283">every call passes these</text>
+  <text class="m" x="312" y="308">1 route is approved</text>
+  <text class="m" x="312" y="325">2 args match the schema</text>
+  <text class="m" x="312" y="342">3 timeout budget</text>
+  <text class="m" x="312" y="359">4 success check</text>
+  <text class="m" x="312" y="376">5 errors become statuses,</text>
+  <text class="m" x="312" y="393">  never exceptions</text>
+
+  <rect class="box" x="542" y="240" width="376" height="172"/>
+  <text class="t" x="556" y="264">Tools</text>
+  <text class="s" x="556" y="283">schema · timeout · retry policy · fallback</text>
+  <text class="m" x="556" y="310">get_policy</text>
+  <text class="s" x="770" y="310">tier 1</text>
+  <text class="m" x="556" y="330">lookup_vendor_risk</text>
+  <text class="s" x="770" y="330">primary · backup</text>
+  <text class="m" x="556" y="350">search_vendor_documents</text>
+  <text class="s" x="770" y="350">repo · archive</text>
+  <text class="m" x="556" y="370">compute_cost_assessment</text>
+  <text class="s" x="770" y="370">local</text>
+  <text class="m" x="556" y="390">record_final_decision</text>
+  <text class="s" x="770" y="390">idempotent</text>
+
+  <path class="edge" d="M 278 320 L 294 320"/>
+  <text class="edge-label-d" x="266" y="312">act</text>
+  <path class="edge" d="M 522 320 L 538 320"/>
+
+  <path class="edge-loop" d="M 744 412 L 744 444 L 166 444 L 166 416"/>
+  <text class="edge-label" x="398" y="438">observe → update state → next step</text>
+
+  <rect class="box-guard" x="54" y="462" width="864" height="52"/>
+  <text class="t" x="68" y="484">Loop guardrails</text>
+  <text class="m" x="68" y="503">step budget 14 · max 2 retries per step · every retry differs in route or arguments</text>
+
+  <!-- ============ STOP CONDITIONS ============ -->
+  <rect class="band" x="964" y="200" width="244" height="336"/>
+  <text class="band-label" x="980" y="222">STOP WHEN</text>
+  <rect class="box" x="982" y="240" width="208" height="34"/>
+  <text class="m" x="994" y="262">goal_complete</text>
+  <rect class="box" x="982" y="286" width="208" height="34"/>
+  <text class="m" x="994" y="308">missing_information</text>
+  <rect class="box" x="982" y="332" width="208" height="34"/>
+  <text class="m" x="994" y="354">risk_too_high</text>
+  <rect class="box" x="982" y="378" width="208" height="34"/>
+  <text class="m" x="994" y="400">evidence_unavailable</text>
+  <rect class="box" x="982" y="424" width="208" height="34"/>
+  <text class="m" x="994" y="446">duplicate_request</text>
+  <rect class="box-guard" x="982" y="470" width="208" height="44"/>
+  <text class="m" x="994" y="488">max_steps_reached</text>
+  <text class="s" x="994" y="505">fails closed to ESCALATE</text>
+
+  <!-- ============ DECISION PIPELINE ============ -->
+  <rect class="band" x="32" y="566" width="1176" height="180"/>
+  <text class="band-label" x="48" y="588">DECISION PIPELINE — runs once, after the loop stops</text>
+
+  <rect class="box-mem" x="54" y="604" width="196" height="118"/>
+  <text class="t" x="68" y="628">Evidence set</text>
+  <text class="s" x="68" y="646">with provenance</text>
+  <text class="m" x="68" y="668">source id · tier</text>
+  <text class="m" x="68" y="685">age vs 180 days</text>
+  <text class="m" x="68" y="702">quarantine flag</text>
+
+  <rect class="box-accent" x="282" y="604" width="212" height="118"/>
+  <text class="t" x="296" y="628">Fact resolution</text>
+  <text class="s" x="296" y="646">source priority applied here</text>
+  <text class="m" x="296" y="668">tier 1 &gt; 2 &gt; 3 &gt; 4</text>
+  <text class="m" x="296" y="685">outdated ≠ current</text>
+  <text class="m" x="296" y="702">tier-2 clash → contested</text>
+
+  <rect class="box-accent" x="526" y="604" width="212" height="118"/>
+  <text class="t" x="540" y="628">Policy rule table</text>
+  <text class="s" x="540" y="646">reads resolved facts only</text>
+  <text class="m" x="540" y="668">R1 … R14, each with</text>
+  <text class="m" x="540" y="685">an action and citations</text>
+  <text class="m" x="540" y="702">strictest action wins</text>
+
+  <rect class="box-guard" x="770" y="604" width="212" height="118"/>
+  <text class="t" x="784" y="628">Output validation</text>
+  <text class="s" x="784" y="646">last gate before recording</text>
+  <text class="m" x="784" y="668">schema · rule ids</text>
+  <text class="m" x="784" y="685">approval needs a tier-2</text>
+  <text class="m" x="784" y="702">cite, else ESCALATE</text>
+
+  <rect class="box-out" x="1014" y="604" width="176" height="118"/>
+  <text class="t" x="1028" y="628">Final decision</text>
+  <text class="m" x="1028" y="650">APPROVE</text>
+  <text class="m" x="1028" y="668">REQUEST_INFORMATION</text>
+  <text class="m" x="1028" y="686">ESCALATE</text>
+  <text class="m" x="1028" y="704">REJECT</text>
+
+  <path class="edge" d="M 250 663 L 278 663"/>
+  <path class="edge" d="M 494 663 L 522 663"/>
+  <path class="edge" d="M 738 663 L 766 663"/>
+  <path class="edge" d="M 982 663 L 1010 663"/>
+  <path class="edge" d="M 486 514 L 486 562"/>
+
+  <!-- ============ MEMORY ============ -->
+  <rect class="band" x="32" y="776" width="1176" height="126"/>
+  <text class="band-label" x="48" y="798">MEMORY</text>
+
+  <rect class="box-accent" x="54" y="812" width="344" height="74"/>
+  <text class="t" x="68" y="835">Short term — task state</text>
+  <text class="m" x="68" y="855">step log · evidence · findings</text>
+  <text class="m" x="68" y="872">attempt ledger · notes</text>
+
+  <rect class="box-mem" x="430" y="812" width="376" height="74"/>
+  <text class="t" x="444" y="835">Long term — SQLite</text>
+  <text class="m" x="444" y="855">runs · steps · evidence · submissions</text>
+  <text class="m" x="444" y="872">decisions, keyed on request_id</text>
+
+  <rect class="box-out" x="838" y="812" width="352" height="74"/>
+  <text class="t" x="852" y="835">Audit trail</text>
+  <text class="m" x="852" y="855">decision_log.json · per-run JSONL</text>
+  <text class="m" x="852" y="872">execution_log.txt</text>
+
+  <path class="edge" d="M 226 746 L 226 808"/>
+  <path class="edge" d="M 1102 722 L 1102 746 L 1014 746 L 1014 808"/>
+</svg>
