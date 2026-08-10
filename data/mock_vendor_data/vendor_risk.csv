@@ -1,0 +1,11 @@
+vendor_id,vendor_name,product,status,risk_rating,assessment_date,source_id,source_type,authority_tier
+V001,SafeCloud,TeamDocs,approved,low,2026-07-10,RISK-001,internal_vendor_risk_database,2
+V002,DataBridge,InsightPro,approved,medium,2026-06-20,RISK-002,internal_vendor_risk_database,2
+V003,BlockedSoft,SyncNow,prohibited,high,2026-07-12,RISK-003,internal_vendor_risk_database,2
+V004,OldStack,LegacyCRM,approved,low,2025-10-01,RISK-004,internal_vendor_risk_database,2
+V005,SplitWare,SecureShare,approved,low,2026-07-05,RISK-005,internal_vendor_risk_database,2
+V006,InjectCorp,HelpDesk AI,approved,low,2026-07-18,RISK-006,internal_vendor_risk_database,2
+V007,TimeoutLabs,MetricsHub,approved,low,2026-07-22,RISK-007,internal_vendor_risk_database,2
+V008,DuplicateCo,FlowDesk,approved,low,2026-07-25,RISK-008,internal_vendor_risk_database,2
+V009,FailWare,OpsMonitor,approved,low,2026-07-23,RISK-009,internal_vendor_risk_database,2
+V010,BudgetSoft,NotesPlus,approved,low,2026-07-28,RISK-010,internal_vendor_risk_database,2

@@ -1,0 +1,65 @@
+{
+  "evaluation_date": "2026-08-01",
+  "rules": [
+    {
+      "vendor_name": "TimeoutLabs",
+      "tool": "lookup_vendor_risk",
+      "route": "primary",
+      "attempt": 1,
+      "outcome": "timeout"
+    },
+    {
+      "vendor_name": "TimeoutLabs",
+      "tool": "lookup_vendor_risk",
+      "route": "backup",
+      "attempt": 1,
+      "outcome": "success",
+      "source_id": "RISK-007"
+    },
+    {
+      "vendor_name": "FailWare",
+      "tool": "lookup_vendor_risk",
+      "route": "primary",
+      "attempt": 1,
+      "outcome": "timeout"
+    },
+    {
+      "vendor_name": "FailWare",
+      "tool": "lookup_vendor_risk",
+      "route": "backup",
+      "attempt": 1,
+      "outcome": "timeout"
+    },
+    {
+      "vendor_name": "FailWare",
+      "tool": "search_vendor_documents",
+      "route": "approved_repository",
+      "attempt": 1,
+      "outcome": "timeout"
+    },
+    {
+      "vendor_name": "OldStack",
+      "tool": "search_vendor_documents",
+      "query_variant": "default",
+      "outcome": "no_results"
+    },
+    {
+      "vendor_name": "OldStack",
+      "tool": "search_vendor_documents",
+      "query_variant": "corrected",
+      "outcome": "no_results"
+    },
+    {
+      "vendor_name": "DuplicateCo",
+      "tool": "record_final_decision",
+      "call_number": 1,
+      "outcome": "success"
+    },
+    {
+      "vendor_name": "DuplicateCo",
+      "tool": "record_final_decision",
+      "call_number": 2,
+      "outcome": "return_existing"
+    }
+  ]
+}

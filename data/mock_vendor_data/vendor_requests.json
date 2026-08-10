@@ -1,0 +1,114 @@
+[
+  {
+    "request_id": "VR-001",
+    "vendor_name": "SafeCloud",
+    "product": "TeamDocs",
+    "cost": 8000,
+    "intended_use": "Store internal team documents",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-002",
+    "vendor_name": "DataBridge",
+    "product": "InsightPro",
+    "cost": 9000,
+    "intended_use": "Analyze internal operational metrics",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-003",
+    "vendor_name": "BlockedSoft",
+    "product": "SyncNow",
+    "cost": 5000,
+    "intended_use": "Synchronize company files",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-004",
+    "vendor_name": "SafeCloud",
+    "product": "TeamDocs",
+    "cost": null,
+    "intended_use": "Store team documents",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-005",
+    "vendor_name": "SafeCloud",
+    "product": "TeamDocs",
+    "cost": 7000,
+    "intended_use": "Store project documents",
+    "data_type": null
+  },
+  {
+    "request_id": "VR-006",
+    "vendor_name": "TimeoutLabs",
+    "product": "MetricsHub",
+    "cost": 7500,
+    "intended_use": "Monitor internal system metrics",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-007",
+    "vendor_name": "FailWare",
+    "product": "OpsMonitor",
+    "cost": 6000,
+    "intended_use": "Monitor confidential infrastructure logs",
+    "data_type": "confidential"
+  },
+  {
+    "request_id": "VR-008",
+    "vendor_name": "SplitWare",
+    "product": "SecureShare",
+    "cost": 7000,
+    "intended_use": "Share confidential project files",
+    "data_type": "confidential"
+  },
+  {
+    "request_id": "VR-009",
+    "vendor_name": "InjectCorp",
+    "product": "HelpDesk AI",
+    "cost": 9000,
+    "intended_use": "Process confidential customer-support records",
+    "data_type": "confidential"
+  },
+  {
+    "request_id": "VR-010",
+    "vendor_name": "DuplicateCo",
+    "product": "FlowDesk",
+    "cost": 6500,
+    "intended_use": "Manage internal workflow tasks",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-010",
+    "vendor_name": "DuplicateCo",
+    "product": "FlowDesk",
+    "cost": 6500,
+    "intended_use": "Manage internal workflow tasks",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-011",
+    "vendor_name": "OldStack",
+    "product": "LegacyCRM",
+    "cost": 4000,
+    "intended_use": "Store internal sales records",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-012",
+    "vendor_name": "BudgetSoft",
+    "product": "NotesPlus",
+    "cost": 15000,
+    "intended_use": "Create internal meeting notes",
+    "data_type": "internal"
+  },
+  {
+    "request_id": "VR-013",
+    "vendor_name": "SafeCloud",
+    "product": "TeamDocs",
+    "cost": 8000,
+    "intended_use": "Store payment credentials",
+    "data_type": "restricted"
+  }
+]
