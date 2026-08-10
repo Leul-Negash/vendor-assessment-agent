@@ -165,11 +165,17 @@ class RulePlanner:
             return self.propose(state)
 
         call, rationale = recovery
+        limit = self.settings.max_retries_per_step
+        proposed = state.attempts[step_key].retries + 1
+        budget = (
+            f"This is retry {proposed} of {limit}."
+            if proposed <= limit
+            # Proposed anyway, so the refusal is recorded rather than silent.
+            else f"That would be retry {proposed}, past the limit of {limit}."
+        )
         return Plan(
             thought=(
-                f"The previous attempt returned {previous.status.value}. "
-                f"{rationale} This is retry {state.attempts[step_key].retries + 1} of "
-                f"{self.settings.max_retries_per_step}."
+                f"The previous attempt returned {previous.status.value}. {rationale} {budget}"
             ),
             call=call,
             step_key=step_key,

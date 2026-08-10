@@ -328,9 +328,10 @@ function verdictPanel(data) {
 function tracePanel(data) {
   const steps = data.steps.map((step) => {
     const status = step.status ?? "";
+    const bare = step.observation.startsWith("retry refused") ? "retry refused" : "state check";
     const head = step.tool
       ? `step ${step.index} · <b>${escapeHtml(step.tool)}</b> · route ${escapeHtml(step.route)} · attempt ${step.attempt}`
-      : `step ${step.index} · <b>state check</b>`;
+      : `step ${step.index} · <b>${bare}</b>`;
     const retry = step.is_retry ? `<span class="retry">retry</span>` : "";
     const act = step.tool
       ? `<div class="act">act      ${escapeHtml(step.tool)}(${escapeHtml(shorten(JSON.stringify(step.args)))})</div>`
