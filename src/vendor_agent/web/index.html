@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor-Assessment Agent</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --line: #2a2f3a;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --accent: #6ea8fe;
+    --approve: #3fb950;
+    --escalate: #d29922;
+    --reject: #f85149;
+    --info: #58a6ff;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 17px; margin: 0; letter-spacing: .2px; }
+  header .meta { color: var(--muted); font-size: 13px; font-family: var(--mono); }
+  main {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px 28px 60px;
+    align-items: start;
+  }
+  @media (max-width: 940px) { main { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .panel h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--muted);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+  button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: #0b1020;
+    border: 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  button:disabled { opacity: .55; cursor: progress; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--panel-2);
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 14px;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid;
+  }
+  .badge.APPROVE { color: var(--approve); border-color: var(--approve); background: #3fb95015; }
+  .badge.ESCALATE { color: var(--escalate); border-color: var(--escalate); background: #d2992215; }
+  .badge.REJECT { color: var(--reject); border-color: var(--reject); background: #f8514915; }
+  .badge.REQUEST_INFORMATION { color: var(--info); border-color: var(--info); background: #58a6ff15; }
+  .counters { display: flex; gap: 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .counters b { color: var(--text); font-weight: 600; }
+  .rationale { margin: 0 0 12px; }
+  .kv { font-size: 13px; margin: 6px 0; }
+  .kv span:first-child {
+    display: inline-block;
+    min-width: 96px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  code, .mono { font-family: var(--mono); font-size: 12.5px; }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 2px 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--panel-2);
+    margin: 2px 4px 2px 0;
+  }
+
+  ol.trace { list-style: none; margin: 0; padding: 0; }
+  ol.trace li {
+    border-left: 2px solid var(--line);
+    padding: 0 0 16px 16px;
+    margin-left: 8px;
+    position: relative;
+  }
+  ol.trace li:last-child { padding-bottom: 0; }
+  ol.trace li::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  li.success::before { background: var(--approve); }
+  li.timeout::before, li.invalid_args::before { background: var(--reject); }
+  li.no_results::before, li.not_found::before { background: var(--escalate); }
+  li.returned_existing::before { background: var(--info); }
+  .step-head { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .step-head b { color: var(--text); }
+  .retry {
+    color: var(--escalate);
+    border: 1px solid var(--escalate);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .thought { margin: 4px 0 6px; }
+  .act, .observe {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin: 4px 0;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .observe.success { border-color: #3fb95055; }
+  .observe.timeout, .observe.invalid_args { border-color: #f8514955; }
+  .observe.no_results, .observe.not_found { border-color: #d2992255; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 600; }
+  td.mono { font-family: var(--mono); font-size: 12px; }
+  .flag { color: var(--reject); font-weight: 600; }
+  .stale { color: var(--escalate); }
+  .placeholder { color: var(--muted); font-size: 14px; }
+  .stack > * + * { margin-top: 24px; }
+  .error { color: var(--reject); font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vendor-Assessment Agent</h1>
+  <span class="meta" id="policy-meta">loading policy…</span>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Submit a request</h2>
+    <form id="form">
+      <label for="request_id">Request ID</label>
+      <input id="request_id" name="request_id" value="WEB-001" required>
+
+      <label for="vendor_name">Vendor name</label>
+      <input id="vendor_name" name="vendor_name" value="SafeCloud">
+
+      <label for="product">Product</label>
+      <input id="product" name="product" value="TeamDocs">
+
+      <label for="cost">Cost (USD)</label>
+      <input id="cost" name="cost" value="8000">
+
+      <label for="intended_use">Intended use</label>
+      <input id="intended_use" name="intended_use" value="Store internal team documents">
+
+      <label for="data_type">Data type</label>
+      <select id="data_type" name="data_type">
+        <option value="">(not provided)</option>
+        <option>public</option>
+        <option selected>internal</option>
+        <option>confidential</option>
+        <option>restricted</option>
+      </select>
+
+      <button type="submit" id="submit">Assess</button>
+      <p class="hint">Leave a field blank to see how the agent handles missing information.</p>
+      <div class="error" id="error" hidden></div>
+    </form>
+
+    <h2 style="margin-top:22px">Supplied requests</h2>
+    <div class="chips" id="chips"></div>
+    <p class="hint">Each chip runs one of the requests from the shared mock data. Running the same
+      ID twice shows duplicate-action prevention.</p>
+  </section>
+
+  <section class="stack" id="results">
+    <div class="panel placeholder" id="placeholder">
+      Submit a request to see the decision, the reason / act / observe trace, and the evidence it
+      rests on.
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+async function loadPolicy() {
+  const policy = await (await fetch("/api/policy")).json();
+  $("policy-meta").textContent =
+    `policy v${policy.version} · evaluation date ${policy.evaluation_date} · ` +
+    `cost limit USD ${policy.cost_threshold.toLocaleString()} · evidence currency ${policy.evidence_max_age_days} days`;
+}
+
+async function loadChips() {
+  const requests = await (await fetch("/api/requests")).json();
+  const holder = $("chips");
+  for (const request of requests) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.textContent = request.request_id;
+    chip.title = `${request.vendor_name ?? "—"} / ${request.product ?? "—"} · ` +
+                 `${request.cost ?? "no cost"} · ${request.data_type ?? "no data type"}`;
+    chip.onclick = () => run(`/api/assess/${request.request_id}`, null, chip);
+    holder.appendChild(chip);
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// The decision submitted to the approval API is the whole decision object; the
+// trace shows enough of it to identify the call, not all of it.
+function shorten(value, limit = 180) {
+  const text = String(value ?? "");
+  return text.length > limit ? text.slice(0, limit - 1) + "…" : text;
+}
+
+function verdictPanel(data) {
+  const d = data.decision;
+  const duplicate = d.duplicate_of_existing
+    ? `<span class="tag" style="border-color:var(--info);color:var(--info)">returned from memory</span>` : "";
+  const injection = d.injection_attempts.length
+    ? `<div class="kv"><span>Injection</span><span class="flag">ignored instructions in
+        ${d.injection_attempts.map(escapeHtml).join(", ")}</span></div>` : "";
+  const missing = d.missing_fields.length
+    ? `<div class="kv"><span>Missing</span><span>${d.missing_fields.map((f) =>
+        `<span class="tag">${escapeHtml(f)}</span>`).join("")}</span></div>` : "";
+
+  return `<div class="panel">
+    <div class="verdict">
+      <span class="badge ${d.action}">${d.action}</span>
+      ${duplicate}
+      <div class="counters">
+        <span>stop <b>${d.stop_reason}</b></span>
+        <span>steps <b>${d.steps_used}</b>/${data.limits.max_steps}</span>
+        <span>retries <b>${d.retries_used}</b></span>
+        <span>tools <b>${d.tools_called.length}</b></span>
+      </div>
+    </div>
+    <p class="rationale">${escapeHtml(d.rationale)}</p>
+    <div class="kv"><span>Rules</span><span>${d.policy_rule_ids.map((r) =>
+      `<span class="tag">${escapeHtml(r)}</span>`).join("")}</span></div>
+    <div class="kv"><span>Evidence</span><span>${d.citations.map((c) =>
+      `<span class="tag">${escapeHtml(c)}</span>`).join("") || "—"}</span></div>
+    ${missing}${injection}
+    <div class="kv"><span>Run</span><span class="mono">${escapeHtml(data.run_id)}</span></div>
+  </div>`;
+}
+
+function tracePanel(data) {
+  const steps = data.steps.map((step) => {
+    const status = step.status ?? "";
+    const head = step.tool
+      ? `step ${step.index} · <b>${escapeHtml(step.tool)}</b> · route ${escapeHtml(step.route)} · attempt ${step.attempt}`
+      : `step ${step.index} · <b>state check</b>`;
+    const retry = step.is_retry ? `<span class="retry">retry</span>` : "";
+    const act = step.tool
+      ? `<div class="act">act      ${escapeHtml(step.tool)}(${escapeHtml(shorten(JSON.stringify(step.args)))})</div>`
+      : "";
+    const observe = step.observation
+      ? `<div class="observe ${status}">observe  ${escapeHtml(step.observation)}</div>` : "";
+    const why = step.retry_rationale
+      ? `<div class="act">update   ${escapeHtml(step.retry_rationale)}</div>` : "";
+    return `<li class="${status}">
+      <div class="step-head">${head}${retry}</div>
+      <div class="thought">${escapeHtml(step.thought)}</div>
+      ${act}${observe}${why}
+    </li>`;
+  }).join("");
+
+  const notes = data.notes.length
+    ? `<p class="hint">${data.notes.map(escapeHtml).join("<br>")}</p>` : "";
+  return `<div class="panel"><h2>Execution trace</h2><ol class="trace">${steps}</ol>${notes}</div>`;
+}
+
+function evidencePanel(data) {
+  if (!data.evidence.length) {
+    return `<div class="panel"><h2>Evidence</h2>
+      <p class="hint">No vendor evidence was retrieved; the decision rests on the policy alone.</p></div>`;
+  }
+  const rows = data.evidence.map((e) => {
+    const state = e.quarantined
+      ? `<span class="flag">quarantined — ${escapeHtml(e.quarantine_reason)}</span>`
+      : e.is_current ? "current" : `<span class="stale">outdated</span>`;
+    return `<tr>
+      <td class="mono">${escapeHtml(e.source_id)}</td>
+      <td>${escapeHtml(e.source_type)}</td>
+      <td class="mono">${e.authority_tier}</td>
+      <td class="mono">${escapeHtml(e.document_date ?? "—")}</td>
+      <td class="mono">${e.age_days ?? "—"}</td>
+      <td>${state}</td>
+    </tr>`;
+  }).join("");
+  return `<div class="panel"><h2>Evidence considered</h2>
+    <table><thead><tr>
+      <th>Source</th><th>Type</th><th>Tier</th><th>Dated</th><th>Age (days)</th><th>State</th>
+    </tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+async function run(url, body, trigger) {
+  const button = trigger ?? $("submit");
+  const previous = button.textContent;
+  button.disabled = true;
+  button.textContent = "running…";
+  $("error").hidden = true;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: body ? { "Content-Type": "application/json" } : {},
+      body: body ? JSON.stringify(body) : null,
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail ?? response.statusText);
+
+    $("placeholder")?.remove();
+    $("results").innerHTML = verdictPanel(data) + tracePanel(data) + evidencePanel(data);
+    $("results").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (err) {
+    $("error").textContent = String(err.message ?? err);
+    $("error").hidden = false;
+  } finally {
+    button.disabled = false;
+    button.textContent = previous;
+  }
+}
+
+$("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const form = new FormData(event.target);
+  const payload = {};
+  for (const [key, value] of form.entries()) {
+    const text = String(value).trim();
+    payload[key] = text === "" ? null : text;
+  }
+  payload.request_id = payload.request_id || "WEB-001";
+  run("/api/assess", payload, $("submit"));
+});
+
+// ?run=VR-007 assesses that request straight away, so a link can point at a
+// particular case.
+loadPolicy();
+loadChips().then(() => {
+  const wanted = new URLSearchParams(location.search).get("run");
+  if (!wanted) return;
+  const chip = [...document.querySelectorAll(".chip")].find((c) => c.textContent === wanted);
+  if (chip) chip.click();
+});
+</script>
+</body>
+</html>
