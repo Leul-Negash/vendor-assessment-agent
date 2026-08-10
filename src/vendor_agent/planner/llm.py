@@ -77,8 +77,9 @@ class LLMPlanner:
     def propose(self, state: TaskState) -> Plan:
         deterministic = self.fallback.propose(state)
         if self._client is None:
-            if self._degraded and self._degraded not in state.notes:
-                state.notes.append(f"llm planner degraded to rule planner: {self._degraded}")
+            note = f"llm planner degraded to rule planner: {self._degraded}"
+            if self._degraded and note not in state.notes:
+                state.notes.append(note)
             return deterministic
 
         try:
