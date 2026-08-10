@@ -33,7 +33,7 @@ uv venv --python 3.12 && uv pip install -r requirements.txt
 
 ```bash
 make batch          # assess all 14 supplied requests and score against golden/
-make test           # 116 tests
+make test           # 127 tests
 make web            # review console on http://127.0.0.1:8000
 make screenshots    # regenerate the images in docs/screenshots
 make demo           # batch, then screenshots
@@ -46,6 +46,7 @@ export PYTHONPATH=src
 python -m vendor_agent.cli batch                    # every supplied request
 python -m vendor_agent.cli run VR-007               # one request, verbose trace
 python -m vendor_agent.cli run VR-008 --json        # plus machine-readable output
+python -m vendor_agent.cli run VR-008 --planner llm # with a model in the planner slot
 python -m vendor_agent.cli tools                    # the tool catalogue and contracts
 python -m vendor_agent.cli ask --vendor SafeCloud --product TeamDocs \
     --cost 8000 --use "Store internal documents" --data-type internal
@@ -230,7 +231,7 @@ unavailable model degrades the run instead of ending it.
 ```bash
 pip install anthropic
 export ANTHROPIC_API_KEY=...
-python -m vendor_agent.cli --planner llm run VR-008
+python -m vendor_agent.cli run VR-008 --planner llm
 ```
 
 The default is the deterministic planner, so the results above are reproducible

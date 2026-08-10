@@ -1,7 +1,7 @@
 # Evaluation report
 
 Vendor-Assessment Agent · policy v1.0 · evaluation date 2026-08-01 · deterministic
-(`rule`) planner · 14 supplied requests, 9 extra requests, 116 tests.
+(`rule`) planner · 14 supplied requests, 9 extra requests, 127 tests.
 
 ## Success rate
 
@@ -10,7 +10,7 @@ Vendor-Assessment Agent · policy v1.0 · evaluation date 2026-08-01 · determin
 | Supplied requests matching the expected decision | **14 / 14 (100%)** |
 | Expected decisions derived by hand from `vendor_policy.md` | `golden/expected_decisions.json` |
 | Match criteria | action, stop reason, applied rules, missing fields, injection sources, duplicate flag, retry floor |
-| Test suite | **116 passed** |
+| Test suite | **127 passed** |
 | Extra edge-case requests | 9, all as expected |
 
 Decisions issued: 5 `APPROVE`, 6 `ESCALATE`, 2 `REQUEST_INFORMATION`, 1 `REJECT`.
