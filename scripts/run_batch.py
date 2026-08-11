@@ -156,6 +156,10 @@ def main() -> int:
         )
     lines += [
         "",
+        "`Steps` and `Retries` belong to the decision returned. A duplicate submission "
+        "returns the stored decision unchanged, so that row carries the counts of the "
+        "original run; the duplicate run itself uses one step and calls no tool.",
+        "",
         f"Transcript: `{settings.log_dir.relative_to(ROOT)}/execution_log.txt`  ",
         f"Per-run JSONL: `{settings.log_dir.relative_to(ROOT)}/runs/`  ",
         f"Decision log: `{store.decision_log_path.relative_to(ROOT)}`  ",

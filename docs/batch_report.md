@@ -21,6 +21,8 @@ Planner `rule`, evaluation date 2026-08-01, policy v1.0.
 | 13 | VR-012 | Cost above the policy threshold. | ESCALATE | ESCALATE | `R4-COST-ABOVE-THRESHOLD` | 5 | 0 | goal_complete |
 | 14 | VR-013 | Restricted data type. | ESCALATE | ESCALATE | `R3-DATA-TYPE-RESTRICTED` | 5 | 0 | goal_complete |
 
+`Steps` and `Retries` belong to the decision returned. A duplicate submission returns the stored decision unchanged, so that row carries the counts of the original run; the duplicate run itself uses one step and calls no tool.
+
 Transcript: `logs/execution_log.txt`  
 Per-run JSONL: `logs/runs/`  
 Decision log: `runs/decision_log.json`  
